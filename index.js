@@ -1,7 +1,4 @@
-// Dependencies
-const express = require('express');
-const app = express();
-const Telegraf = require('telegraf')
+const Telegraf = require('telegraf');
 
 const bot = new Telegraf('1129108256:AAFzOZOQRIpLTXmXTjodD5bPcrN2VxvcG0k');
 bot.start((ctx) => ctx.reply('Welcome'));
