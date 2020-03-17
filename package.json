@@ -1,0 +1,14 @@
+{
+  "name": "telegram-bot",
+  "version": "1.0.0",
+  "description": "first bot i made for telegram",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kourosh mirzaei",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
