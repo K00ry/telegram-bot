@@ -5,7 +5,7 @@ const axios = require('axios');
 const Telegraf = require('telegraf');
 const bot = new Telegraf('1129108256:AAFzOZOQRIpLTXmXTjodD5bPcrN2VxvcG0k');
 
-// bot.telegram.setWebhook('https://telegram-bot-eight.now.sh/secret-path');
+bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
 
 app.use(express.static(path.join(__dirname,'public')));
 
@@ -52,20 +52,20 @@ bot.hears('kos',(ctx) => ctx.reply('ah ah !!!!' ));
 bot.hears('mehran',(ctx) => ctx.reply('ah ah Piff Piff, nekbat kiram dahanesh!!!!!' ));
 // bot.hears('😂',(ctx) => ctx.reply('نِمَک!!!' ));
 bot.hears('😂',(ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-bot-eight.now.sh/nemak.jpg',
+    url: 'https://telegram-nader.herokuapp.com/nemak.jpg',
     filename: 'nemak.jpg'
 }));
 bot.hears('nader joon',(ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-bot-eight.now.sh/khanoom.jpg',
+    url: 'https://telegram-nader.herokuapp.com/khanoom.jpg',
     filename: 'khanoom.jpg'
 }));
 
 bot.hears('🤣',(ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-bot-eight.now.sh/nemak.jpg',
+    url: 'https://telegram-nader.herokuapp.com/nemak.jpg',
     filename: 'nemak.jpg'
 }));
 // bot.hears('😁',(ctx) => ctx.replyWithPhoto({
-//     url: 'https://telegram-bot-eight.now.sh/nader.png',
+//     url: 'https://telegram-nader.herokuapp.com/nader.png',
 //     filename: 'nader.png'
 // }));
 bot.hears('😒',(ctx) => ctx.reply('Khafesho Mehran!!!' ));
@@ -79,7 +79,7 @@ bot.mention('@KoonenaderBot', (ctx) => ctx.reply('Koon mikhay behet bedam?'));
 
 //
 bot.hears('nader che shekliye?', (ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-bot-eight.now.sh/nader.png',
+    url: 'https://telegram-nader.herokuapp.com/nader.png',
     filename: 'nader.png'
 }));
 
@@ -94,5 +94,5 @@ app.get('/',function (req,res) {
 bot.catch((err, ctx) => {
     console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
 });
-// app.use(bot.webhookCallback('/secret-path'));
+app.use(bot.webhookCallback('/secret-path'));
 app.listen(process.env.PORT || 3000);
