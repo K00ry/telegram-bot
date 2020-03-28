@@ -4,8 +4,7 @@
   "description": "first bot i made for telegram",
   "main": "app.js",
   "scripts": {
-    "now-start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Kourosh mirzaei",
   "license": "MIT",
