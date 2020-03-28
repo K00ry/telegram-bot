@@ -4,8 +4,9 @@ const app = express();
 const axios = require('axios');
 const Telegraf = require('telegraf');
 const bot = new Telegraf('1129108256:AAFzOZOQRIpLTXmXTjodD5bPcrN2VxvcG0k');
-
+app.use(bot.webhookCallback('/secret-path'));
 bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
+
 
 app.use(express.static(path.join(__dirname,'public')));
 
@@ -84,7 +85,7 @@ bot.hears('nader che shekliye?', (ctx) => ctx.replyWithPhoto({
 }));
 
 
-// bot.launch();
+bot.launch();
 
 app.get('/',function (req,res) {
 
@@ -94,5 +95,5 @@ app.get('/',function (req,res) {
 bot.catch((err, ctx) => {
     console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
 });
-app.use(bot.webhookCallback('/secret-path'));
+
 app.listen(process.env.PORT || 3000);
