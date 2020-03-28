@@ -23,7 +23,7 @@ bot.hears('Jaber', ctx => {
 
 
 // bot.command('lights', ctx => ctx.reply('Hello from the bot side.'));
-bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam! mitoonid soalate zir ro az man beporsid :' +
+bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam!👹 mitoonid soalate zir ro az man beporsid :' +
     "\n"+
     'nader key miyay?' +
     "\n"+
@@ -31,7 +31,14 @@ bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam! mitoonid s
     "\n"+
     'nader bere biyad chand dar miyad?' +
     "\n"+
-    'nader kiramo mikhori ya mibary?'));
+    'nader kiramo mikhori ya mibary?' +
+    "\n"+
+    'nader mikhay bedi che shekli hasty?' +
+    "\n"+
+    'nader che shekliye?' +
+    "\n"+
+    'nader asabeto begam chika mikoni?'));
+
 bot.help((ctx) => ctx.reply('Koon mikhay behet bedam?'));
 
 
@@ -40,7 +47,7 @@ bot.hears('nader key miyay?',(ctx) => ctx.replyWithAudio({
     url:'https://telegram-nader.herokuapp.com/voice/miyam.ogg',
     filename:"miyam.ogg"
 }));
-bot.hears('biya',(ctx) => ctx.replyWithAudio({
+bot.hears('nader che joori koon midi?',(ctx) => ctx.replyWithAudio({
     url:'https://telegram-nader.herokuapp.com/voice/midam.ogg',
     filename:"midam.ogg"
 }));
@@ -50,7 +57,7 @@ bot.hears('biya',(ctx) => ctx.replyWithAudio({
 
 
 // bot.hears('nader key miyay?',(ctx) => ctx.reply('tamrin kon!! tamriin kon miyam!!!'));
-bot.hears('nader che joori koon midi?',(ctx) => ctx.reply('aval az koonet mikhoram!! badan miparam roosh!!! badan kireto mikonam toosh!! '));
+// bot.hears('nader che joori koon midi?',(ctx) => ctx.reply('aval az koonet mikhoram!! badan miparam roosh!!! badan kireto mikonam toosh!! '));
 bot.hears('nader bere biyad chand dar miyad?',(ctx) => ctx.reply('eeeeeeennnaaaa!!'));
 bot.hears('nader kiramo mikhori ya mibary?',(ctx) => ctx.reply('oskole vamoonde kireto mikhoram ye poolam behet miidam!!!'));
 bot.hears('nader',(ctx) => ctx.reply('haa! chi mikhay???!!' ));
@@ -59,7 +66,7 @@ bot.hears('koon',(ctx) => ctx.reply('Midam😍😍😍!!!!' ));
 bot.hears('kos',(ctx) => ctx.reply('ah ah !!!!' ));
 bot.hears('mehran',(ctx) => ctx.reply('ah ah Piff Piff, nekbat kiram dahanesh!!!!!' ));
 bot.hears('😒',(ctx) => ctx.reply('Khafesho Mehran!!!' ));
-// bot.hears('😂',(ctx) => ctx.reply('نِمَک!!!' ));
+bot.hears('😂😂',(ctx) => ctx.reply('نِمَک!!!' ));
 
 
 ///image replies!!!!!!!!!!!!!!!
@@ -68,7 +75,7 @@ bot.hears('😂',(ctx) => ctx.replyWithPhoto({
     url: 'https://telegram-nader.herokuapp.com/nemak.jpg',
     filename: 'nemak.jpg'
 }));
-bot.hears('nader joon',(ctx) => ctx.replyWithPhoto({
+bot.hears('nader mikhay bedi che shekli hasty?',(ctx) => ctx.replyWithPhoto({
     url: 'https://telegram-nader.herokuapp.com/khanoom.jpg',
     filename: 'khanoom.jpg'
 }));
@@ -77,10 +84,14 @@ bot.hears('🤣',(ctx) => ctx.replyWithPhoto({
     url: 'https://telegram-nader.herokuapp.com/nemak.jpg',
     filename: 'nemak.jpg'
 }));
-// bot.hears('😁',(ctx) => ctx.replyWithPhoto({
-//     url: 'https://telegram-nader.herokuapp.com/nader.png',
-//     filename: 'nader.png'
-// }));
+bot.hears('nader che shekliye?', (ctx) => ctx.replyWithPhoto({
+    url: 'https://telegram-nader.herokuapp.com/shaki.jpg',
+    filename: 'nader-shaki.jpg'
+}));
+bot.hears('nader asabeto begam chika mikoni?',(ctx) => ctx.replyWithPhoto({
+    url: 'https://telegram-nader.herokuapp.com/block.jpg',
+    filename: 'block.jpg'
+}));
 
 
 
@@ -90,11 +101,8 @@ bot.mention('@KoonenaderBot', (ctx) => ctx.reply('Koon mikhay behet bedam?'));
 
 
 
-//
-bot.hears('nader che shekliye?', (ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-nader.herokuapp.com/nader.png',
-    filename: 'nader.png'
-}));
+
+
 
 
 
