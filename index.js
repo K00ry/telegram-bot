@@ -17,11 +17,11 @@ bot.use((ctx,next)=>{
     next();
 });
 
-bot.hears('Jaber', ctx => {
-    console.log(ctx.update.message.text);
+
+
+bot.catch((err, ctx) => {
+    console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
 });
-
-
 // bot.command('lights', ctx => ctx.reply('Hello from the bot side.'));
 bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam!👹 mitoonid soalate zir ro az man beporsid :' +
     "\n"+
@@ -84,10 +84,12 @@ bot.hears('🤣',(ctx) => ctx.replyWithPhoto({
     url: 'https://telegram-nader.herokuapp.com/nemak.jpg',
     filename: 'nemak.jpg'
 }));
+
 bot.hears('nader che shekliye?', (ctx) => ctx.replyWithPhoto({
     url: 'https://telegram-nader.herokuapp.com/shaki.jpg',
-    filename: 'nader-shaki.jpg'
+    filename: 'shaki.jpg'
 }));
+
 bot.hears('nader asabeto begam chika mikoni?',(ctx) => ctx.replyWithPhoto({
     url: 'https://telegram-nader.herokuapp.com/block.jpg',
     filename: 'block.jpg'
@@ -97,7 +99,7 @@ bot.hears('nader asabeto begam chika mikoni?',(ctx) => ctx.replyWithPhoto({
 
 
 
-bot.mention('@KoonenaderBot', (ctx) => ctx.reply('Koon mikhay behet bedam?'));
+bot.mention('@KooneNaderBot', (ctx) => ctx.reply('Koon mikhay behet bedam?'));
 
 
 
@@ -113,8 +115,6 @@ app.get('/',function (req,res) {
    console.log("ahaaa!")
 
 });
-bot.catch((err, ctx) => {
-    console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
-});
+
 
 app.listen(process.env.PORT || 3000);
