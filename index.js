@@ -8,6 +8,8 @@ app.use(bot.webhookCallback('/secret-path'));
 bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
 
 
+
+
 app.use(express.static(path.join(__dirname,'public')));
 
 
