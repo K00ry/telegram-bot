@@ -35,13 +35,24 @@ bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam!👹 mitoon
     "\n"+
     'nader mikhay bedi che shekli hasty?' +
     "\n"+
+    'nader kojayi?' +
+    "\n"+
     'nader che shekliye?' +
+    "\n"+
+    'khafesho nader' +
     "\n"+
     'nader asabeto begam chika mikoni?'));
 
 bot.help((ctx) => ctx.reply('Koon mikhay behet bedam?'));
 
-
+bot.hears('nader kojayi?',(ctx) => ctx.replyWithAudio({
+    url:'https://telegram-nader.herokuapp.com/voice/khoone.ogg',
+    filename:"khoone.ogg"
+}));
+bot.hears('khafesho nader!',(ctx) => ctx.replyWithAudio({
+    url:'https://telegram-nader.herokuapp.com/voice/vamonde.ogg',
+    filename:"vamonde.ogg"
+}));
 
 bot.hears('nader key miyay?',(ctx) => ctx.replyWithAudio({
     url:'https://telegram-nader.herokuapp.com/voice/miyam.ogg',
