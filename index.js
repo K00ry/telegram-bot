@@ -2,7 +2,7 @@ const express = require("express");
 const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
-const logger = require("morgan");
+// const logger = require("morgan");
 const axios = require('axios');
 const Telegraf = require('telegraf');
 const bot = new Telegraf('1129108256:AAFzOZOQRIpLTXmXTjodD5bPcrN2VxvcG0k');
@@ -10,7 +10,7 @@ const bot = new Telegraf('1129108256:AAFzOZOQRIpLTXmXTjodD5bPcrN2VxvcG0k');
 
 
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,'public')));
 
