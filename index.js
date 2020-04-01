@@ -8,6 +8,8 @@ app.use(bot.webhookCallback('/secret-path'));
 bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
 
 
+
+
 app.use(express.static(path.join(__dirname,'public')));
 
 
@@ -27,7 +29,7 @@ bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam!👹 mitoon
     "\n"+
     'nader key miyay?' +
     "\n"+
-    'nader che joori koon midi?' +
+    'nader chejoori koon midi?' +
     "\n"+
     'nader bere biyad chand dar miyad?' +
     "\n"+
@@ -49,7 +51,7 @@ bot.hears('nader kojayi?',(ctx) => ctx.replyWithAudio({
     url:'https://telegram-nader.herokuapp.com/voice/khoone.ogg',
     filename:"khoone.ogg"
 }));
-bot.hears('khafesho nader!',(ctx) => ctx.replyWithAudio({
+bot.hears('khafesho nader',(ctx) => ctx.replyWithAudio({
     url:'https://telegram-nader.herokuapp.com/voice/vamonde.ogg',
     filename:"vamonde.ogg"
 }));
@@ -58,7 +60,7 @@ bot.hears('nader key miyay?',(ctx) => ctx.replyWithAudio({
     url:'https://telegram-nader.herokuapp.com/voice/miyam.ogg',
     filename:"miyam.ogg"
 }));
-bot.hears('nader che joori koon midi?',(ctx) => ctx.replyWithAudio({
+bot.hears('nader chejoori koon midi?',(ctx) => ctx.replyWithAudio({
     url:'https://telegram-nader.herokuapp.com/voice/midam.ogg',
     filename:"midam.ogg"
 }));
