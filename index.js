@@ -1,21 +1,64 @@
 const express = require("express");
 const path = require('path');
+const bodyParser = require("body-parser");
 const app = express();
+const logger = require("morgan");
 const axios = require('axios');
 const Telegraf = require('telegraf');
 const bot = new Telegraf('1129108256:AAFzOZOQRIpLTXmXTjodD5bPcrN2VxvcG0k');
-app.use(bot.webhookCallback('/secret-path'));
-bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
 
 
 
 
+app.use(logger("dev"));
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,'public')));
 
 
+app.post('/',function(req,res){
+    console.log(req.body);
+    // console.log(res.body);
+
+});
+
+app.use(bot.webhookCallback('/secret-path'));
+bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
 bot.use((ctx,next)=>{
-    ctx.update.message.text = ctx.update.message.text.toLowerCase();
-    console.log(ctx.update.message.text);
+    if(ctx.update.message.text){
+        ctx.update.message.text = ctx.update.message.text.toLowerCase();
+        console.log(ctx.update.message.text);
+    }
+    console.log(ctx.update.message.from);
+
+    next();
+});
+
+///// THIS COMMENTED IS WHEN I WANT THE BOT TO ACTION WHEN EVER NADER SAID ANYTHING
+
+// bot.use((ctx,next)=>{
+//     if(ctx.update.message.from.first_name === "Nader"){
+//     ctx.reply("Khafesho Nadere Kooni!!?? man Nadere vagheyiam Jaye man harf nazan!!!!");
+//     }
+//
+//     next();
+// });
+
+bot.use((ctx,next)=>{
+    if(ctx.update.message.animation){
+    if(ctx.update.message.animation.file_name === "715aca4f-f457-4a41-83d9-7d98de5f4f85.gif.mp4" ||
+        ctx.update.message.animation.thumb.file_unique_id=== "AQAD3XaPGgAEk1IAAg"){
+
+    const items = ["Kire in 👆 Yaroo dahaname, abesham harrooz mipasham roo pestonam!!!😍😍",
+                    "dare be kose ammam mikhande             👆😒 ",
+                    "eeena!! be in pire marde ye joori kooon midam 😍😍😍😍!! nemidoonin ke😍😍!!"];
+
+        let item = items[Math.floor(Math.random() * items.length)];
+        ctx.reply(item);
+
+        }
+    }
+
+
     next();
 });
 
@@ -74,6 +117,7 @@ bot.hears('nader chejoori koon midi?',(ctx) => ctx.replyWithAudio({
 bot.hears('nader bere biyad chand dar miyad?',(ctx) => ctx.reply('eeeeeeennnaaaa!!'));
 bot.hears('nader kiramo mikhori ya mibary?',(ctx) => ctx.reply('oskole vamoonde kireto mikhoram ye poolam behet miidam!!!'));
 bot.hears('nader',(ctx) => ctx.reply('haa! chi mikhay???!!' ));
+bot.hears('kiramo mikhori?',(ctx) => ctx.reply('Haaaa!! Mikhoram😍😍😍!!!!' ));
 bot.hears('kir',(ctx) => ctx.reply('Mikhoram😍😍😍!!!!' ));
 bot.hears('koon',(ctx) => ctx.reply('Midam😍😍😍!!!!' ));
 bot.hears('kos',(ctx) => ctx.reply('ah ah !!!!' ));
@@ -127,6 +171,20 @@ app.get('/',function (req,res) {
 
    console.log("ahaaa!")
 
+});
+app.use((req, res, next) => {
+    const error = new Error("Not Found");
+    error.status = 404;
+    next(error);
+});
+app.use((error, req, res, next) => {
+    res.status(error.status || 500);
+
+    res.json({
+        error:{
+            message:error.message
+        }
+    });
 });
 
 
