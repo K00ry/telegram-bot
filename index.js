@@ -2,27 +2,90 @@ const express = require("express");
 const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
-// const logger = require("morgan");
+const logger = require("morgan");
 const axios = require('axios');
 const Telegraf = require('telegraf');
-const bot = new Telegraf('1129108256:AAFzOZOQRIpLTXmXTjodD5bPcrN2VxvcG0k');
+const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
+
+const mongoose = require("mongoose");
+const HearSaySchema = require('./models/hearSays').HearsSays;
 
 
 
 
-// app.use(logger("dev"));
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname,'public')));
+mongoose.connect(
+
+    "mongodb+srv://koory:" +
+    process.env.MONGO_ATLAS_PW +
+    "@pars-jadval-4kkmo.mongodb.net/telebot?retryWrites=true",
+    { useNewUrlParser: true,
+    useUnifiedTopology: true  },
+
+);
+
+const db = mongoose.connection;
 
 
-app.post('/',function(req,res){
-    console.log(req.body);
-    // console.log(res.body);
+db.on("error", err => {
+    console.error("connection error:", err);
 
 });
 
-app.use(bot.webhookCallback('/secret-path'));
-bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
+db.once("open", () => {
+    console.log("DB connection successful!");
+
+});
+
+
+
+
+
+
+
+
+
+
+app.use(express.urlencoded({ extended: true }));
+
+app.use(logger("dev"));
+// app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname,'public')));
+
+
+// app.post('/submit-form',function(req,res){
+//     console.log(req.body);
+//     // console.log(res.body);
+// });
+
+
+
+app.post("/submit-form", (req, res) => {
+    // console.log(req.body);
+
+    HearSaySchema.find()
+        .exec()
+        .then(hear => {
+            hear.push({
+                hears: req.body.hears_some,
+                says:req.body.says_some
+            }).save((err, slab) => {
+                console.log(err);
+                res.status(200).json({
+                    sizes: slab.map(doc => doc.hears),
+                    // message: `product ${slab.sizes[slab.sizes.length - 1].type} got saved`
+                });
+            });
+            console.log(hear);
+
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ error: err });
+        });
+});
+
+// app.use(bot.webhookCallback('/secret-path'));
+// bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
 bot.use((ctx,next)=>{
     if(ctx.update.message.text){
         ctx.update.message.text = ctx.update.message.text.toLowerCase();
