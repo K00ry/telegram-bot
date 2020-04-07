@@ -2,81 +2,84 @@ const express = require("express");
 const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
+const cors = require('cors');
 const logger = require("morgan");
 const axios = require('axios');
 const Telegraf = require('telegraf');
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
-
 const mongoose = require("mongoose");
-const HearSaySchema = require('./models/hearSays').HearsSays;
+const HearSay = require('./models/hearSays').HearsSays;
 
 
 
 
 mongoose.connect(
-
     "mongodb+srv://koory:" +
     process.env.MONGO_ATLAS_PW +
     "@pars-jadval-4kkmo.mongodb.net/telebot?retryWrites=true",
     { useNewUrlParser: true,
     useUnifiedTopology: true  },
-
 );
 
 const db = mongoose.connection;
 
-
 db.on("error", err => {
     console.error("connection error:", err);
-
 });
 
 db.once("open", () => {
     console.log("DB connection successful!");
-
 });
 
 
 
-
-
-
-
-
-
-
-app.use(express.urlencoded({ extended: true }));
-
 app.use(logger("dev"));
-// app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname,'public')));
+app.use(bodyParser.json());
+// app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+// app.use(express.static(path.join(__dirname,'public')));
 
 
-// app.post('/submit-form',function(req,res){
-//     console.log(req.body);
-//     // console.log(res.body);
-// });
 
+app.get('/',(req,res)=>{
+
+    // res.send({"kir":"hello abbas"});
+
+    HearSay.find({}, function(err, hears) {
+        res.json({
+            allHears: hears
+        });
+        if (err){
+           res.json({
+               err: err
+           })
+        }
+    });
+});
 
 
 app.post("/submit-form", (req, res) => {
-    // console.log(req.body);
 
-    HearSaySchema.find()
-        .exec()
-        .then(hear => {
-            hear.push({
-                hears: req.body.hears_some,
-                says:req.body.says_some
-            }).save((err, slab) => {
-                console.log(err);
-                res.status(200).json({
-                    sizes: slab.map(doc => doc.hears),
-                    // message: `product ${slab.sizes[slab.sizes.length - 1].type} got saved`
-                });
-            });
-            console.log(hear);
-
+    const hearSay = new HearSay({
+        hears: req.body.hears_some,
+        says:req.body.says_some
+    }).save()
+        .then(response => {
+            console.log(response);
+        })
+        .catch(err=>{
+            console.log(err);
+        });
+});
+app.get("/delete", (req, res) => {
+        const idMain = req.params;
+    HearSay.findOne({_id: req.id}).exec()
+        .then(slab => {
+            console.log(slab);
+            console.log(idMain);
+            // slab.id(receivedId).remove();
+            // slab.save();
+            // res.status(200).json(slab);
         })
         .catch(err => {
             console.log(err);
@@ -84,15 +87,49 @@ app.post("/submit-form", (req, res) => {
         });
 });
 
+
+bot.use( (ctx,next)=>{
+
+    if(ctx.update.message.text){
+
+    HearSay.findOne({hears: ctx.update.message.text}).exec()
+        .then(response => {
+            console.log(response);
+
+            if(response){
+                ctx.reply(response.says);
+            }
+        })
+        .catch(err => console.log(err));
+    }
+        next();
+} );
+
 // app.use(bot.webhookCallback('/secret-path'));
 // bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
+
 bot.use((ctx,next)=>{
     if(ctx.update.message.text){
         ctx.update.message.text = ctx.update.message.text.toLowerCase();
         console.log(ctx.update.message.text);
     }
     console.log(ctx.update.message.from);
+    next();
+});
 
+bot.use((ctx,next)=>{
+    if(ctx.update.message.animation){
+        if(ctx.update.message.animation.file_name === "715aca4f-f457-4a41-83d9-7d98de5f4f85.gif.mp4" ||
+            ctx.update.message.animation.thumb.file_unique_id=== "AQAD3XaPGgAEk1IAAg"){
+
+            const items = ["Kire in 👆 Yaroo dahaname, abesham harrooz mipasham roo pestonam!!!😍😍",
+                "dare be kose ammam mikhande             👆😒 ",
+                "eeena!! be in pire marde ye joori kooon midam 😍😍😍😍!! nemidoonin ke😍😍!!"];
+
+            let item = items[Math.floor(Math.random() * items.length)];
+            ctx.reply(item);
+        }
+    }
     next();
 });
 
@@ -106,31 +143,14 @@ bot.use((ctx,next)=>{
 //     next();
 // });
 
-bot.use((ctx,next)=>{
-    if(ctx.update.message.animation){
-    if(ctx.update.message.animation.file_name === "715aca4f-f457-4a41-83d9-7d98de5f4f85.gif.mp4" ||
-        ctx.update.message.animation.thumb.file_unique_id=== "AQAD3XaPGgAEk1IAAg"){
 
-    const items = ["Kire in 👆 Yaroo dahaname, abesham harrooz mipasham roo pestonam!!!😍😍",
-                    "dare be kose ammam mikhande             👆😒 ",
-                    "eeena!! be in pire marde ye joori kooon midam 😍😍😍😍!! nemidoonin ke😍😍!!"];
-
-        let item = items[Math.floor(Math.random() * items.length)];
-        ctx.reply(item);
-
-        }
-    }
-
-
-    next();
-});
 
 
 
 bot.catch((err, ctx) => {
     console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
 });
-// bot.command('lights', ctx => ctx.reply('Hello from the bot side.'));
+
 bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam!👹 mitoonid soalate zir ro az man beporsid :' +
     "\n"+
     'nader key miyay?' +
@@ -192,26 +212,26 @@ bot.hears('😂😂',(ctx) => ctx.reply('نِمَک!!!' ));
 ///image replies!!!!!!!!!!!!!!!
 
 bot.hears('😂',(ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-nader.herokuapp.com/nemak.jpg',
+    url: 'https://telegram-nader.herokuapp.com/img/nemak.jpg',
     filename: 'nemak.jpg'
 }));
 bot.hears('nader mikhay bedi che shekli hasty?',(ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-nader.herokuapp.com/khanoom.jpg',
+    url: 'https://telegram-nader.herokuapp.com/img/khanoom.jpg',
     filename: 'khanoom.jpg'
 }));
 
 bot.hears('🤣',(ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-nader.herokuapp.com/nemak.jpg',
+    url: 'https://telegram-nader.herokuapp.com/img/nemak.jpg',
     filename: 'nemak.jpg'
 }));
 
 bot.hears('nader che shekliye?', (ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-nader.herokuapp.com/shaki.jpg',
+    url: 'https://telegram-nader.herokuapp.com/img/shaki.jpg',
     filename: 'shaki.jpg'
 }));
 
 bot.hears('nader asabeto begam chika mikoni?',(ctx) => ctx.replyWithPhoto({
-    url: 'https://telegram-nader.herokuapp.com/block.jpg',
+    url: 'https://telegram-nader.herokuapp.com/img/block.jpg',
     filename: 'block.jpg'
 }));
 
