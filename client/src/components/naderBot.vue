@@ -60,11 +60,14 @@ export default {
         location.reload()
       },
       deleteConversation(id){
+          console.log(id);
         axios.get(url+'/delete',{
-          idOf : id
+            params:{
+                id : id
+            }
         }).then(res => console.log(res))
                 .catch(err=>console.log(err));
-        // location.reload()
+        location.reload()
 
 
       }

@@ -72,14 +72,12 @@ app.post("/submit-form", (req, res) => {
         });
 });
 app.get("/delete", (req, res) => {
-        const idMain = req.params;
-    HearSay.findOne({_id: req.id}).exec()
+        const idMain = req.query.id;
+
+    HearSay.findOne({_id: idMain}).exec()
         .then(slab => {
-            console.log(slab);
-            console.log(idMain);
-            // slab.id(receivedId).remove();
-            // slab.save();
-            // res.status(200).json(slab);
+            slab.remove();
+            res.status(200);
         })
         .catch(err => {
             console.log(err);
