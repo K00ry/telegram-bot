@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require('cors');
-const logger = require("morgan");
+// const logger = require("morgan");
 const axios = require('axios');
 const Telegraf = require('telegraf');
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
@@ -33,17 +33,16 @@ db.once("open", () => {
 
 
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(bodyParser.json());
-// app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-// app.use(express.static(path.join(__dirname,'public')));
 
 
 
-app.get('/',(req,res)=>{
 
-    // res.send({"kir":"hello abbas"});
+
+
+app.get('/api',(req,res)=>{
 
     HearSay.find({}, function(err, hears) {
         res.json({
@@ -58,7 +57,7 @@ app.get('/',(req,res)=>{
 });
 
 
-app.post("/submit-form", (req, res) => {
+app.post("/api/submit-form", (req, res) => {
 
     const hearSay = new HearSay({
         hears: req.body.hears_some,
@@ -71,7 +70,8 @@ app.post("/submit-form", (req, res) => {
             console.log(err);
         });
 });
-app.get("/delete", (req, res) => {
+
+app.get("/api/delete", (req, res) => {
         const idMain = req.query.id;
 
     HearSay.findOne({_id: idMain}).exec()
@@ -85,6 +85,14 @@ app.get("/delete", (req, res) => {
         });
 });
 
+
+if(process.env.NODE_ENV === 'production'){
+
+    app.use(express.static(path.join(__dirname,'public')));
+
+    //Handle SPA
+    app.get(/.*/,(reg,res)=>res.sendFile(__dirname+"/public/index.html"))
+}
 
 bot.use( (ctx,next)=>{
 
@@ -103,8 +111,14 @@ bot.use( (ctx,next)=>{
         next();
 } );
 
+
+
+
 app.use(bot.webhookCallback('/secret-path'));
 bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
+
+
+
 
 bot.use((ctx,next)=>{
     if(ctx.update.message.text){
@@ -190,11 +204,8 @@ bot.hears('nader chejoori koon midi?',(ctx) => ctx.replyWithAudio({
 }));
 
 
-// chat replies!!!!!!!!
+///////////// chat replies!!!!!!!!
 
-
-// bot.hears('nader key miyay?',(ctx) => ctx.reply('tamrin kon!! tamriin kon miyam!!!'));
-// bot.hears('nader che joori koon midi?',(ctx) => ctx.reply('aval az koonet mikhoram!! badan miparam roosh!!! badan kireto mikonam toosh!! '));
 bot.hears('nader bere biyad chand dar miyad?',(ctx) => ctx.reply('eeeeeeennnaaaa!!'));
 bot.hears('nader kiramo mikhori ya mibary?',(ctx) => ctx.reply('oskole vamoonde kireto mikhoram ye poolam behet miidam!!!'));
 bot.hears('nader',(ctx) => ctx.reply('haa! chi mikhay???!!' ));
@@ -233,26 +244,10 @@ bot.hears('nader asabeto begam chika mikoni?',(ctx) => ctx.replyWithPhoto({
     filename: 'block.jpg'
 }));
 
-
-
-
-
 bot.mention('@KooneNaderBot', (ctx) => ctx.reply('Koon mikhay behet bedam?'));
-
-
-
-
-
-
-
 
 bot.launch();
 
-app.get('/',function (req,res) {
-
-   console.log("ahaaa!")
-
-});
 app.use((req, res, next) => {
     const error = new Error("Not Found");
     error.status = 404;

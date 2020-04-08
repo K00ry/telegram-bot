@@ -4,4 +4,4 @@ public/node_modules/
 .idea
 package-lock.json
 nodemon.json
-/client/node_modules/
+client

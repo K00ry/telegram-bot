@@ -29,7 +29,7 @@
 <script>
 
   import axios from 'axios';
-  const url = 'http://localhost:3000';
+  const url = 'api';
 
 export default {
   name: 'NaderBot',
