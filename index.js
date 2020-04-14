@@ -130,13 +130,16 @@ bot.use((ctx,next)=>{
 });
 
 bot.use((ctx,next)=>{
+    console.log(ctx.update.message.animation);
     if(ctx.update.message.animation){
         if(ctx.update.message.animation.file_name === "715aca4f-f457-4a41-83d9-7d98de5f4f85.gif.mp4" ||
-            ctx.update.message.animation.thumb.file_unique_id=== "AQAD3XaPGgAEk1IAAg"){
+            ctx.update.message.animation.thumb.file_unique_id === "AQAD3XaPGgAEk1IAAg" ||
+            ctx.update.message.animation.file_name === 'IMG_9465.MOV'){
 
             const items = ["Kire in 👆 Yaroo dahaname, abesham harrooz mipasham roo pestonam!!!😍😍",
                 "dare be kose ammam mikhande             👆😒 ",
-                "eeena!! be in pire marde ye joori kooon midam 😍😍😍😍!! nemidoonin ke😍😍!!"];
+                "yani yerooz dastam be kire in 👆piremarde mirese ye sucke por tof bezanam vasash?😢",
+            "Hamejoore kiresh dahaname khaste nemisham az kire in yaroo!! 👆😍😍"];
 
             let item = items[Math.floor(Math.random() * items.length)];
             ctx.reply(item);
@@ -147,13 +150,21 @@ bot.use((ctx,next)=>{
 
 ///// THIS COMMENTED IS WHEN I WANT THE BOT TO ACTION WHEN EVER NADER SAID ANYTHING
 
-// bot.use((ctx,next)=>{
-//     if(ctx.update.message.from.first_name === "Nader"){
-//     ctx.reply("Khafesho Nadere Kooni!!?? man Nadere vagheyiam Jaye man harf nazan!!!!");
-//     }
-//
-//     next();
-// });
+bot.use((ctx,next)=>{
+    if(ctx.update.message.from.first_name === "Nader"){
+
+            const items = ["Khafesho Nadere Kooni!!?? man Nadere vagheyiam Jaye man harf nazan!!!!",
+                "Kiram to ghiyafat nadere taghalobi, cheghad kos migi!!!",
+                "Nadere taghalobi! shab kos migi! rooz kos Migi! tabestoon kos migi! zemestoonam to koonet!",
+                "Akhe kiram to ghiyafeye taghalobit! nadere kooni! key khafe mishi?🤬",
+                "lashoo mibandi ya vasat bebandam nadere taghalobi?😡"];
+
+            let item = items[Math.floor(Math.random() * items.length)];
+            ctx.reply(item);
+    }
+
+    next();
+});
 
 
 
