@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require('cors');
+//log for development
 // const logger = require("morgan");
 const axios = require('axios');
 const Telegraf = require('telegraf');
@@ -12,6 +13,7 @@ const HearSay = require('./models/hearSays').HearsSays;
 
 
 
+// Connection to MongoDB Atlas
 
 mongoose.connect(
     "mongodb+srv://koory:" +
@@ -32,7 +34,7 @@ db.once("open", () => {
 });
 
 
-
+//log for development
 // app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(cors());
@@ -41,6 +43,7 @@ app.use(cors());
 
 
 
+//Get Request for refreshing the list on the main Page
 
 app.get('/api',(req,res)=>{
 
@@ -56,6 +59,7 @@ app.get('/api',(req,res)=>{
     });
 });
 
+// Post for Submting the new "hears"field (sentence the bot will react to)
 
 app.post("/api/submit-form", (req, res) => {
 
@@ -70,6 +74,8 @@ app.post("/api/submit-form", (req, res) => {
             console.log(err);
         });
 });
+
+// for Deleting the reaction already existed in the list
 
 app.get("/api/delete", (req, res) => {
         const idMain = req.query.id;
@@ -86,8 +92,9 @@ app.get("/api/delete", (req, res) => {
 });
 
 
-if(process.env.NODE_ENV === 'production'){
+/// Function for Handling client Vue in production deployment
 
+if(process.env.NODE_ENV === 'production'){
     app.use(express.static(path.join(__dirname,'public')));
 
     //Handle SPA
@@ -129,17 +136,18 @@ bot.use((ctx,next)=>{
     next();
 });
 
+////MIDDLEWARE FOR REACTION TO SPECIFIC GIF
 bot.use((ctx,next)=>{
     console.log(ctx.update.message.animation);
     if(ctx.update.message.animation){
-        if(ctx.update.message.animation.file_name === "715aca4f-f457-4a41-83d9-7d98de5f4f85.gif.mp4" ||
-            ctx.update.message.animation.thumb.file_unique_id === "AQAD3XaPGgAEk1IAAg" ||
-            ctx.update.message.animation.file_name === 'IMG_9465.MOV'){
+        if(ctx.update.message.animation.thumb.file_unique_id === 'AQADffcTMAAEJCAAAg' ||
+            ctx.update.message.animation.thumb.file_unique_id === 'AQAD9FdhGQAEhYECAAE' ||
+            ctx.update.message.animation.thumb.file_unique_id === 'AQADtz8mGQAFegEAAQ'){
 
-            const items = ["Kire in 👆 Yaroo dahaname, abesham harrooz mipasham roo pestonam!!!😍😍",
-                "dare be kose ammam mikhande             👆😒 ",
-                "yani yerooz dastam be kire in 👆piremarde mirese ye sucke por tof bezanam vasash?😢",
-            "Hamejoore kiresh dahaname khaste nemisham az kire in yaroo!! 👆😍😍"];
+            const items = ["kheyli bahale yaroo dobare bezar ino!!",
+                "az Koja avordi inaro? ",
+                "nader shabihe in yaroo mikhandi.",
+            "harki be in mikhande khande dare."];
 
             let item = items[Math.floor(Math.random() * items.length)];
             ctx.reply(item);
@@ -148,16 +156,16 @@ bot.use((ctx,next)=>{
     next();
 });
 
-///// THIS COMMENTED IS WHEN I WANT THE BOT TO ACTION WHEN EVER NADER SAID ANYTHING
+///// THIS MIDDLEWARE IS  WHEN I WANT THE BOT TO ACTION WHEN EVER NADER SAID ANYTHING
 
 bot.use((ctx,next)=>{
     if(ctx.update.message.from.first_name === "Nader"){
 
-            const items = ["Khafesho Nadere Kooni!!?? man Nadere vagheyiam Jaye man harf nazan!!!!",
-                "Kiram to ghiyafat nadere taghalobi, cheghad kos migi!!!",
-                "Nadere taghalobi! shab kos migi! rooz kos Migi! tabestoon kos migi! zemestoonam to koonet!",
-                "Akhe kiram to ghiyafeye taghalobit! nadere kooni! key khafe mishi?🤬",
-                "lashoo mibandi ya vasat bebandam nadere taghalobi?😡"];
+            const items = ["Nader jan mersi ke nazareto migi :)",
+                "kash man mese to vagheyi boodam!",
+                "Nader yani mishe man yerooz mese to khafan va bahal besham?",
+                "Nader jan kheyli bahali!!",
+                "Kholase ke damet garm ke migi inaro!!"];
 
             let item = items[Math.floor(Math.random() * items.length)];
             ctx.reply(item);
@@ -176,15 +184,15 @@ bot.catch((err, ctx) => {
 
 bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam!👹 mitoonid soalate zir ro az man beporsid :' +
     "\n"+
-    'nader key miyay?' +
+    'nader khoobi?' +
     "\n"+
-    'nader chejoori koon midi?' +
+    'nader chetoori? ' +
     "\n"+
     'nader bere biyad chand dar miyad?' +
     "\n"+
-    'nader kiramo mikhori ya mibary?' +
+    'nader mano mibary biroon?' +
     "\n"+
-    'nader mikhay bedi che shekli hasty?' +
+    'nader mikhay beri biroon che shekli hasty?' +
     "\n"+
     'nader kojayi?' +
     "\n"+
@@ -215,21 +223,21 @@ bot.hears('nader chejoori koon midi?',(ctx) => ctx.replyWithAudio({
 }));
 
 
-///////////// chat replies!!!!!!!!
+////// chat replies!
 
-bot.hears('nader bere biyad chand dar miyad?',(ctx) => ctx.reply('eeeeeeennnaaaa!!'));
-bot.hears('nader kiramo mikhori ya mibary?',(ctx) => ctx.reply('oskole vamoonde kireto mikhoram ye poolam behet miidam!!!'));
+bot.hears('nader bere biyad chand dar miyad?',(ctx) => ctx.reply('ena!'));
+bot.hears('nader kiramo mikhori ya mibary?',(ctx) => ctx.reply('bale khahesh mikonam'));
 bot.hears('nader',(ctx) => ctx.reply('haa! chi mikhay???!!' ));
-bot.hears('kiramo mikhori?',(ctx) => ctx.reply('Haaaa!! Mikhoram😍😍😍!!!!' ));
-bot.hears('kir',(ctx) => ctx.reply('Mikhoram😍😍😍!!!!' ));
-bot.hears('koon',(ctx) => ctx.reply('Midam😍😍😍!!!!' ));
-bot.hears('kos',(ctx) => ctx.reply('ah ah !!!!' ));
-bot.hears('mehran',(ctx) => ctx.reply('ah ah Piff Piff, nekbat kiram dahanesh!!!!!' ));
-bot.hears('😒',(ctx) => ctx.reply('Khafesho Mehran!!!' ));
-bot.hears('😂😂',(ctx) => ctx.reply('نِمَک!!!' ));
+bot.hears('kiramo mikhori?',(ctx) => ctx.reply('befarmayid' ));
+bot.hears('kir',(ctx) => ctx.reply('berim sham' ));
+bot.hears('koon',(ctx) => ctx.reply('Midam! har chi khasty' ));
+bot.hears('kos',(ctx) => ctx.reply('bah bah !!!!' ));
+bot.hears('mehran',(ctx) => ctx.reply('afarin aliye' ));
+bot.hears('😒',(ctx) => ctx.reply('Khafesho Mehran!' ));
+bot.hears('😂😂',(ctx) => ctx.reply('نِمَک!' ));
 
 
-///image replies!!!!!!!!!!!!!!!
+///image replies!
 
 bot.hears('😂',(ctx) => ctx.replyWithPhoto({
     url: 'https://telegram-nader.herokuapp.com/img/nemak.jpg',
@@ -255,7 +263,7 @@ bot.hears('nader asabeto begam chika mikoni?',(ctx) => ctx.replyWithPhoto({
     filename: 'block.jpg'
 }));
 
-bot.mention('@KooneNaderBot', (ctx) => ctx.reply('Koon mikhay behet bedam?'));
+bot.mention('@KooneNaderBot', (ctx) => ctx.reply('sallam mikhay behet bedam?'));
 
 bot.launch();
 
