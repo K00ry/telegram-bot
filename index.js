@@ -182,7 +182,7 @@ bot.catch((err, ctx) => {
     console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
 });
 
-bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam!👹 mitoonid soalate zir ro az man beporsid :' +
+bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam! mitoonid soalate zir ro az man beporsid :' +
     "\n"+
     'nader khoobi?' +
     "\n"+
@@ -202,7 +202,7 @@ bot.start((ctx) => ctx.reply('Sallam Doostan man nadere kooni hastam!👹 mitoon
     "\n"+
     'nader asabeto begam chika mikoni?'));
 
-bot.help((ctx) => ctx.reply('Koon mikhay behet bedam?'));
+bot.help((ctx) => ctx.reply('azizam mikhay bhm doost shim?'));
 
 bot.hears('nader kojayi?',(ctx) => ctx.replyWithAudio({
     url:'https://telegram-nader.herokuapp.com/voice/khoone.ogg',
@@ -225,13 +225,13 @@ bot.hears('nader chejoori koon midi?',(ctx) => ctx.replyWithAudio({
 
 ////// chat replies!
 
-bot.hears('nader bere biyad chand dar miyad?',(ctx) => ctx.reply('ena!'));
+bot.hears('hello?',(ctx) => ctx.reply('ena!'));
 bot.hears('nader kiramo mikhori ya mibary?',(ctx) => ctx.reply('bale khahesh mikonam'));
 bot.hears('nader',(ctx) => ctx.reply('haa! chi mikhay???!!' ));
-bot.hears('kiramo mikhori?',(ctx) => ctx.reply('befarmayid' ));
-bot.hears('kir',(ctx) => ctx.reply('berim sham' ));
+bot.hears('baman doost mishi?',(ctx) => ctx.reply('befarmayid' ));
+bot.hears('dostam',(ctx) => ctx.reply('berim sham' ));
 bot.hears('koon',(ctx) => ctx.reply('Midam! har chi khasty' ));
-bot.hears('kos',(ctx) => ctx.reply('bah bah !!!!' ));
+bot.hears('bahbah',(ctx) => ctx.reply('bah bah !!!!' ));
 bot.hears('mehran',(ctx) => ctx.reply('afarin aliye' ));
 bot.hears('😒',(ctx) => ctx.reply('Khafesho Mehran!' ));
 bot.hears('😂😂',(ctx) => ctx.reply('نِمَک!' ));
