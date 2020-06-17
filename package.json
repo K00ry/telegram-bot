@@ -4,7 +4,7 @@
   "description": "first bot i made for telegram",
   "main": "app.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon && cd client && npm run serve"
   },
   "author": "Kourosh mirzaei",
   "license": "MIT",

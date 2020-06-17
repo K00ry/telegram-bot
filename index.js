@@ -4,10 +4,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require('cors');
 //log for development
-// const logger = require("morgan");
+const logger = require("morgan");
 const axios = require('axios');
 const Telegraf = require('telegraf');
-const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
+const bot = new Telegraf(process.env.GHOORY_TOKEN);
 const mongoose = require("mongoose");
 const HearSay = require('./models/hearSays').HearsSays;
 
@@ -35,29 +35,29 @@ db.once("open", () => {
 
 
 //log for development
-// app.use(logger("dev"));
+app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(cors());
-
-
+const API = require('./routes/api')
+app.use('/api',API)
 
 
 
 //Get Request for refreshing the list on the main Page
 
-app.get('/api',(req,res)=>{
-
-    HearSay.find({}, function(err, hears) {
-        res.json({
-            allHears: hears
-        });
-        if (err){
-           res.json({
-               err: err
-           })
-        }
-    });
-});
+// app.get('/api',(req,res)=>{
+//
+//     HearSay.find({}, function(err, hears) {
+//         res.json({
+//             allHears: hears
+//         });
+//         if (err){
+//            res.json({
+//                err: err
+//            })
+//         }
+//     });
+// });
 
 // Post for Submting the new "hears"field (sentence the bot will react to)
 
@@ -121,8 +121,8 @@ bot.use( (ctx,next)=>{
 
 
 
-app.use(bot.webhookCallback('/secret-path'));
-bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
+// app.use(bot.webhookCallback('/secret-path'));
+// bot.telegram.setWebhook('https://telegram-nader.herokuapp.com/secret-path');
 
 
 
